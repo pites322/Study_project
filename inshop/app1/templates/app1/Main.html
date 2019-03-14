@@ -1,0 +1,23 @@
+{% extends "app1/base.html" %}
+
+
+{% block content %}
+    <br>
+    <br>
+        <li class="nav-item">
+        <a class="nav-link" href="">In your basket:{{purchase_amount}}</a>
+      </li>
+<br>
+<div>
+  {% for prod in Products %}
+      <tr>
+        <td>{{ prod.name}}</td>
+        <td>{{ prod.manufacturer }}</td>
+        <td>{{ prod.bluetooth_or_wire}} </td>
+        <td>{{ prod.type_connector}} </td>
+        <td>{{ prod.price}} </td>
+        <td><a href="{% url 'product_details' pk=prod.pk %}">see more</a></td>
+      </tr>
+  {% endfor %}
+</div>
+{% endblock %}
