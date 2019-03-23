@@ -1,23 +1,29 @@
 {% extends "app1/base.html" %}
+{% load static %}
 
-
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'app1\css\main.css'%}">
+{% endblock %}
 {% block content %}
+<div class="main-content">
     <br>
     <br>
-        <li class="nav-item">
-        <a class="nav-link" href="">In your basket:{{purchase_amount}}</a>
-      </li>
-<br>
-<div>
-  {% for prod in Products %}
-      <tr>
-        <td>{{ prod.name}}</td>
-        <td>{{ prod.manufacturer }}</td>
-        <td>{{ prod.bluetooth_or_wire}} </td>
-        <td>{{ prod.type_connector}} </td>
-        <td>{{ prod.price}} </td>
-        <td><a href="{% url 'product_details' pk=prod.pk %}">see more</a></td>
-      </tr>
-  {% endfor %}
+    {% for prod in Products %}
+    <div class="product-table">
+        <div>
+            <img src="{{ prod.photo }}" class="picture">
+        </div>
+        <div>
+            <ul class="table-element">
+                <li>{{ prod.name}}</li>
+                <li>{{ prod.manufacturer }}</li>
+                <li>{{ prod.bluetooth_or_wire}} </li>
+                <li>{{ prod.type_connector}} </li>
+                <li>{{ prod.price}} </li>
+                <li><a href="{% url 'product_details' pk=prod.pk %}" class="buy-link">see more</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

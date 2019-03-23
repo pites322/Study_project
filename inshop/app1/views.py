@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Product, ShoppingList, User
-from .forms import AddBuy, ChangeWarranty
+from .forms import AddBuy, ChangeWarranty, ChangeUserInformation
 from django.utils import timezone
 from django.views.generic.base import TemplateView
 from functools import wraps
@@ -14,15 +14,6 @@ class HomePage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
         context['Products'] = Product.objects.all()
-        purchases = ShoppingList.objects.all()
-        purchase_amount = 0
-        for purchase in purchases:
-            if purchase.buyer_id == self.request.user.id:
-                purchase_amount = purchase_amount + purchase.price
-            else:
-                pass
-        context['purchase_amount'] = purchase_amount
-
         return context
 
 
@@ -41,19 +32,56 @@ def product_details(request, pk):
         form.product_name = prod.name
         form.save()
         warr = warr.save()
-        warr.name = prod.name
-        warr.manufacturer = prod.manufacturer
-        warr.color = prod.color
-        warr.bluetooth_or_wire = prod.bluetooth_or_wire
-        warr.connection_range = prod.connection_range
-        warr.work_time = prod.work_time
         warr.warranty = prod.warranty - 1
-        warr.wire_lenght = prod.wire_lenght
-        warr.type_connector = prod.type_connector
-        warr.price = prod.price
-        warr.photo = prod.photo
         warr.save()
         return redirect('bits in bytes')
     else:
         pass
     return render(request, 'app1/prod_detail.html', {'prod': prod, 'form': form, 'warr': warr})
+
+
+class Profile(TemplateView):
+
+    template_name = "app1/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(Profile, self).get_context_data(**kwargs)
+        pk = self.request.user.id
+        user_data = get_object_or_404(User, pk=pk)
+        context['first_name'] = user_data.first_name
+        context['last_name'] = user_data.last_name
+        context['region'] = user_data.region
+        context['city'] = user_data.city
+        context['address'] = user_data.first_name
+        context['delivery'] = user_data.first_name
+        return context
+
+
+def user_change_info(request):
+    user = request.user
+    if request.method == 'POST':
+        form = ChangeUserInformation(request.POST, instance=user)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.save()
+        return redirect('profile')
+    else:
+        form = ChangeUserInformation(instance=user)
+    return render(request, 'app1/profile_correct.html', {'form': form})
+
+
+def basket(request, pk=None):
+    prod_in_bask = ShoppingList.objects.filter(buyer_id=request.user.id)
+    if pk is not None:
+        dell_pod = ShoppingList.objects.filter(id=pk)
+        del_prod_obj = dell_pod.get()
+        prod = get_object_or_404(Product, pk=del_prod_obj.product_id)
+        dell_pod.delete()
+        warr = ChangeWarranty(request.POST, instance=prod)
+        warr = warr.save()
+        warr.warranty = prod.warranty + 1
+        warr.save()
+        return redirect('basket')
+    else:
+        pass
+    return render(request, 'app1/basket.html', {'prod_in_bask': prod_in_bask})

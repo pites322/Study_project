@@ -7,9 +7,6 @@ class CustomUserForm(RegistrationForm):
     class Meta(RegistrationForm.Meta):
         model = User
 
-        # def __init__(self, *args, **kwargs):
-        #     self.fields[email_field].required = False
-
 
 class AddBuy(forms.ModelForm):
     class Meta:
@@ -21,3 +18,9 @@ class ChangeWarranty(forms.ModelForm):
     class Meta:
         model = Product
         fields = []
+
+
+class ChangeUserInformation(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'region', 'city', 'address', 'delivery']

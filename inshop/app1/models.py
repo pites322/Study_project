@@ -20,9 +20,6 @@ class ShoppingList (models.Model):
     payed_or_not = models.CharField(max_length=80, default="No")
     product_name = models.CharField(max_length=80)
 
-    # def buy(self):
-    #     self.data_of_buy = timezone.now()
-    #     self.save()
 
 
 class Product(models.Model):
@@ -67,4 +64,7 @@ class Product(models.Model):
     wire_lenght = models.FloatField(null=True, blank=True)
     type_connector = models.CharField(max_length=10, choices=TYPE_CONNECTOR)
     price = models.FloatField()
-    photo = models.ImageField(blank=True)
+    photo = models.ImageField(blank=True, upload_to="app1/static/images/")
+
+    def __str__(self):
+        return self.name

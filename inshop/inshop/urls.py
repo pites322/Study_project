@@ -17,6 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from app1.forms import CustomUserForm
 from django_registration.backends.one_step.views import RegistrationView
+from django.conf.urls.static import static
+from . import settings
 
 
 urlpatterns = [
@@ -27,4 +29,4 @@ urlpatterns = [
         name='django_registration_register',),
     url(r'^accounts/', include('django_registration.backends.one_step.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls'))
-]
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

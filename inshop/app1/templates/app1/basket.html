@@ -1,0 +1,19 @@
+{% extends "app1/base.html" %}
+
+
+{% block content %}
+<br>
+<br>
+<div>
+  {% for prod in prod_in_bask %}
+      <tr>
+        <td>{{ prod.product_name}}</td>
+        <td>{{ prod.data_of_buy }}</td>
+        <td>{{ prod.price}} </td>
+        <td>{{ prod.payed_or_not}} </td>
+          <td>{{ prod.id}} </td>
+        <td><a href="{% url 'basket' pk=prod.id %}">Delete</a></td>
+      </tr>
+  {% endfor %}
+</div>
+{% endblock %}
