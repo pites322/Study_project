@@ -21,7 +21,7 @@ class GetBasketState(MiddlewareMixin):
         purchases = ShoppingList.objects.all()
         purchase_amount = 0
         for purchase in purchases:
-            if purchase.buyer_id == user.id:
+            if purchase.buyer_id == user.id and purchase.payed_or_not == "No":
                 purchase_amount = purchase_amount + purchase.price
             else:
                 pass

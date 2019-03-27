@@ -11,6 +11,8 @@ urlpatterns = [
      url(r'account/profile/change_data$', views.user_change_info, name="profile_correct"),
      url(r'account/basket$', views.basket, name="basket"),
      url(r'account/basket/(?P<pk>\d+)$', views.basket, name="basket"),
+     url(r'search/$', views.Search.as_view(), name='searching'),
+     url(r'account/basket/buy_one/(?P<pk>\d+)$', views.buy_one_product, name="product_buy_one"),
 ]
 
 

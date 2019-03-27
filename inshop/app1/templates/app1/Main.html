@@ -2,28 +2,38 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'app1\css\main.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'app1/css/main.css'%}">
+<title>B&B main</title>
 {% endblock %}
 {% block content %}
-<div class="main-content">
+<div>
     <br>
     <br>
-    {% for prod in Products %}
-    <div class="product-table">
-        <div>
-            <img src="{{ prod.photo }}" class="picture">
-        </div>
-        <div>
-            <ul class="table-element">
-                <li>{{ prod.name}}</li>
-                <li>{{ prod.manufacturer }}</li>
-                <li>{{ prod.bluetooth_or_wire}} </li>
-                <li>{{ prod.type_connector}} </li>
-                <li>{{ prod.price}} </li>
-                <li><a href="{% url 'product_details' pk=prod.pk %}" class="buy-link">see more</a></li>
-            </ul>
-        </div>
-    </div>
-    {% endfor %}
+    <table border="2" width="100%" cellpadding="5">
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Manufacturer</th>
+            <th>Bluetooth or wire</th>
+            <th>Connection type</th>
+            <th>Price</th>
+            <th>More information</th>
+         </tr>
+        {% for prod in Products %}
+        <tr>
+        {% if prod.photo != 'None' %}
+            <th><img src="{{ prod.photo.url }}" class="picture"></th>
+        {% else %}
+            <th><img src="{% static 'images/non_img.jpg'%}" class="picture"></th>
+        {% endif %}
+            <th>{{ prod.name}}</th>
+            <th>{{ prod.get_manufacturer_display }}</th>
+            <th>{{ prod.get_bluetooth_or_wire_display}} </th>
+            <th>{{ prod.get_type_connector_display}} </th>
+            <th>{{ prod.price}} </th>
+            <th><a href="{% url 'product_details' pk=prod.pk %}" class="buy-link">See more</a></th>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
