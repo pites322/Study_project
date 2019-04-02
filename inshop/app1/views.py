@@ -15,7 +15,15 @@ class HomePage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePage, self).get_context_data(**kwargs)
-        context['Products'] = Product.objects.all()
+        productrs = Product.objects.all()
+        current_page = Paginator(productrs, 10)
+        page = self.request.GET.get('page', 1)
+        try:
+            context['Products'] = current_page.page(page)
+        except PageNotAnInteger:
+            context['Products'] = current_page.page(1)
+        except EmptyPage:
+            context['Products'] = current_page.page(current_page.num_pages)
         return context
 
 
@@ -24,22 +32,14 @@ class Search(TemplateView):
     template_name = "app1/search.html"
 
     def get_context_data(self, **kwargs):
-        context = {}
+        context = super(Search, self).get_context_data(**kwargs)
         question = self.request.GET.get('search')
         if question is not None:
             search_products = Product.objects.filter(name__contains=question)
-            context['last_question'] = '?q=%s' % question
-            print(dir(search_products))
-            for prod in search_products:
-                prod_data = get_object_or_404(Product, name=prod)
-                photo = str(prod_data.photo)
-                if photo != 'None':
-                    photo = photo.split('/')
-                    context[f"photo_{prod}"] = photo[2] + '/' + photo[3]
-                else:
-                    context[f"photo_{prod}"] = "images/non_img.jpg"
+            context['last_question'] = '?search=%s' % question
+            print(context['last_question'])
             current_page = Paginator(search_products, 10)
-            page = self.request.GET.get('page')
+            page = self.request.GET.get('page', 1)
             try:
                 context['products_lists'] = current_page.page(page)
             except PageNotAnInteger:

@@ -1,5 +1,6 @@
 {% extends "app1/base.html" %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'app1/css/main.css'%}">
@@ -35,5 +36,6 @@
         </tr>
         {% endfor %}
     </table>
+     {% bootstrap_pagination Products %}
 </div>
 {% endblock %}

@@ -23,7 +23,7 @@ SECRET_KEY = 'vs-92_*&x$u6)flnwcbi#cy+)rof$#s4(kq_($+4f&6#&$&p2*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -36,8 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'rest_framework',
     'bootstrapform',
-    'app1'
+    'bootstrap4',
+    'app1',
+    'api'
 ]
 
 MIDDLEWARE = [

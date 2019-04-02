@@ -15,11 +15,10 @@ class User(AbstractUser):
 class ShoppingList (models.Model):
     buyer = models.ForeignKey('User', on_delete=models.CASCADE)
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
-    price = models.FloatField(null=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     data_of_buy = models.DateTimeField(auto_now_add=True)
     payed_or_not = models.CharField(max_length=80, default="No")
     product_name = models.CharField(max_length=80)
-
 
 
 class Product(models.Model):
@@ -58,12 +57,12 @@ class Product(models.Model):
     manufacturer = models.CharField(max_length=10, choices=MANUFACT)
     color = models.CharField(max_length=10, choices=COLOR)
     bluetooth_or_wire = models.CharField(max_length=10, choices=TYPE)
-    connection_range = models.CharField(max_length=60, blank=True)
-    work_time = models.CharField(max_length=60, blank=True)
+    connection_range = models.CharField(max_length=60, blank=True, default="0")
+    work_time = models.CharField(max_length=60, blank=True, default="0")
     warranty = models.IntegerField()
-    wire_lenght = models.FloatField(null=True, blank=True)
+    wire_lenght = models.DecimalField(max_digits=4, decimal_places=1, blank=True, default="0", )
     type_connector = models.CharField(max_length=10, choices=TYPE_CONNECTOR)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     photo = models.ImageField(blank=True, upload_to="media/", default="None")
 
     def __str__(self):

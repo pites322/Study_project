@@ -16,9 +16,16 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from app1.forms import CustomUserForm
+from api.views import ProductViewSet, BasketViewSet
 from django_registration.backends.one_step.views import RegistrationView
 from django.conf.urls.static import static
+from rest_framework import routers
 from . import settings
+
+
+router = routers.DefaultRouter()
+router.register(r'products', ProductViewSet)
+router.register(r'basket', BasketViewSet)
 
 
 urlpatterns = [
@@ -28,6 +35,8 @@ urlpatterns = [
         RegistrationView.as_view(form_class=CustomUserForm),
         name='django_registration_register',),
     url(r'^accounts/', include('django_registration.backends.one_step.urls')),
-    url(r'^accounts/', include('django.contrib.auth.urls'))
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^api/v1/', include(router.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
               + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
